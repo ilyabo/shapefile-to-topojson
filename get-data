@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+mkdir -p build
+
+if [ ! -f build/tl_2018_us_state.shp ]; then
+  curl -o build/tl_2018_us_state.zip 'https://www2.census.gov/geo/tiger/TIGER2018/STATE/tl_2018_us_state.zip'
+  unzip -od build build/tl_2018_us_state.zip tl_2018_us_state.shp tl_2018_us_state.dbf
+  chmod a-x build/tl_2018_us_state.*
+fi
+
+if [ ! -f build/tl_2018_us_county.shp ]; then
+  curl -o build/tl_2018_us_county.zip 'https://www2.census.gov/geo/tiger/TIGER2018/COUNTY/tl_2018_us_county.zip'
+  unzip -od build build/tl_2018_us_county.zip tl_2018_us_county.shp tl_2018_us_county.dbf
+  chmod a-x build/tl_2018_us_county.*
+fi

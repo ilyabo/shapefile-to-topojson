@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+const shapefile = require('shapefile');
+const d3geo = require('d3-geo');
+
+if (process.argv.length < 3) {
+  console.log('Usage: average-shape-area <input.shp>')
+  process.exit(1);
+}
+
+
+/**
+ * Returns the average spherical area of the GeoJSON features in steradians.
+ * Uses a streaming parser, so it doesn't need to load the whole file in memory.
+ * @param inputShapeFile
+ * @returns {Promise<void>}
+ */
+async function findAverageShapeArea(inputShapeFile) {
+  let sum = 0, count = 0;
+  await shapefile.open(inputShapeFile)
+    .then(source => source.read()
+      .then(function log(result) {
+        if (result.done) return;
+        const area = d3geo.geoArea(result.value);
+        sum += area;
+        count++;
+        return source.read().then(log);
+      }));
+  return sum / count;
+}
+
+
+(async function() {
+  const inputFile = process.argv[ 2 ];
+  try {
+    const avgArea = await findAverageShapeArea(inputFile);
+    console.log(avgArea)
+
+  } catch (err) {
+    console.error(err.stack);
+    process.exit(1);
+  }
+})();

@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+const fs = require('fs');
+const d3geo = require('d3-geo');
+const topojson = require('topojson');
+
+if (process.argv.length < 3) {
+  console.log('Usage: pick-properties <ID_PROPERTY> <NAME_PROPERTY>')
+  process.exit(1);
+}
+
+const ID_PROPERTY = process.argv[2];
+const NAME_PROPERTY = process.argv[3];
+
+const topo = JSON.parse(fs.readFileSync(0));
+
+const centroidsById = {};
+for (const f of topojson.feature(topo, topo.objects.zones).features) {
+  const id = `${f.properties[ID_PROPERTY]}`;
+  if (id) {
+    centroidsById[id] = d3geo.geoCentroid(f);
+  }
+}
+
+topo.objects.zones.geometries.forEach(geom => {
+  const id = geom.properties[ID_PROPERTY];
+  const name = geom.properties[NAME_PROPERTY];
+  if (!id) {
+    console.error(
+      `At least one shape has an empty ID property (${ID_PROPERTY}) value: ${JSON.stringify(geom.properties)}`
+    );
+    process.exit(1);
+  } else {
+    geom.id = `${id}`;
+    geom.properties = {
+      centroid: centroidsById[id],
+      name: name ? `${name}` : `${id}`,
+    };
+  }
+});
+
+console.log(JSON.stringify(topo));
