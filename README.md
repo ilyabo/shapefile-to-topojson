@@ -33,6 +33,6 @@ Convert US counties to TopoJSON:
  
 
 The default value for the simplification accuracy parameter is 1/5000.
-That means that 1/5000th of the average shape area will be used as the simplification threshold.
+That means that 1/5000th of the average shape area will be used as the [simplification threshold](https://github.com/topojson/topojson-simplify#toposimplify_spherical_area).
 
 All the shapes in the DBF must have a value for the id property, otherwise the conversion will fail.
