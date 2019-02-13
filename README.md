@@ -8,7 +8,7 @@ First, install dependencies:
 
     npm install
 
-To run:
+Usage:
 
     ./shapefile-to-topojson <shapefile> <DBF file> <id property> <name property> [<simplification accuracy>]
 
