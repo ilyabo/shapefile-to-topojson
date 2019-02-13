@@ -16,8 +16,8 @@ To run:
 
 Examples:
 
-   ./get-test-data
-   ./shapefile-to-topojson build/tl_2018_us_state.shp build/tl_2018_us_state.dbf STUSPS NAME 1/10000
+    ./get-test-data
+    ./shapefile-to-topojson build/tl_2018_us_state.shp build/tl_2018_us_state.dbf STUSPS NAME 1/10000
 
 The default value for the simplification accuracy parameter is 1/5000.
 That means that 1/5000th of the average shape area will be used as the simplification threshold.
