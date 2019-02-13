@@ -4,6 +4,8 @@ This utility converts shapefiles to TopoJSON attempting to automatically find a 
 at the bounding boxes of the shapes in the shapefile.
 It also ensures that all the shapes in the output TopoJSON have their ids and names set.
 
+The utility requires [Node.js](https://nodejs.org) to run.
+
 First, install dependencies:
 
     npm install
