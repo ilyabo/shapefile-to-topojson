@@ -10,7 +10,7 @@ First, install dependencies:
 
     npm install
 
-Usage:
+### Usage
 
     shapefile-to-topojson <shapefile> <DBF file> <id property> <name property> [<simplification accuracy>]
 
