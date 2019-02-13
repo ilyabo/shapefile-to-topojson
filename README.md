@@ -11,7 +11,7 @@ First, install dependencies:
 
 To run:
 
-    ./shapefile-to-topojson <path to shapefile> <path to DBF file> <id property in DBF> <name property in DBF> [<simplification accuracy>]
+    ./shapefile-to-topojson <shapefile> <DBF file> <id property> <name property> [<simplification accuracy>]
 
 
 Examples:
