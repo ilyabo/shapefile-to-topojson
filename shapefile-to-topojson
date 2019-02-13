@@ -28,8 +28,9 @@ COUNT_MISSING_IDS=$(dbf2json -n $INPUT_DBF \
  | ndjson-reduce  "p += (d['$ID_PROPERTY'] == null ? 1 : 0)" '0' \
 )
 if [ $COUNT_MISSING_IDS -gt 0 ]; then
-  echo "There is a problem with the shapes: At least one shape is missing an ID property value."
-  echo "Ensure that the name of the ID property is correct: ${ID_PROPERTY}"
+  >&2 echo "There is a problem with the shapes: At least one shape is missing an ID property value."
+  >&2 echo "Ensure that the name of the ID property is correct: ${ID_PROPERTY}"
+  >&2 echo "Sample properties: $(dbf2json -n $INPUT_DBF | head)"
   exit 1
 fi
 
