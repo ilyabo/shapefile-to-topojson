@@ -10,7 +10,7 @@ First, install dependencies:
 
 Usage:
 
-    ./shapefile-to-topojson <shapefile> <DBF file> <id property> <name property> [<simplification accuracy>]
+    shapefile-to-topojson <shapefile> <DBF file> <id property> <name property> [<simplification accuracy>]
 
 
 Examples:
