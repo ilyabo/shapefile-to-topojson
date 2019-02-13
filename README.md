@@ -21,4 +21,4 @@ Examples:
 The default value for the simplification accuracy parameter is 1/5000.
 That means that 1/5000th of the average shape area will be used as the simplification threshold.
 
-All the shapes in the DBF must have a unique value for the <ID_PROPERTY>.
+All the shapes in the DBF must have a value for the id property, otherwise the conversion will fail.
