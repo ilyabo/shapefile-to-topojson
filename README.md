@@ -13,10 +13,18 @@ Usage:
     shapefile-to-topojson <shapefile> <DBF file> <id property> <name property> [<simplification accuracy>]
 
 
-Examples:
+### Examples
+
+To download test shapefiles:
 
     ./get-test-data
+
+Convert US states to TopoJSON:
+
     ./shapefile-to-topojson build/tl_2018_us_state.shp build/tl_2018_us_state.dbf STUSPS NAME 1/10000
+    
+Convert US counties to TopoJSON:
+
     ./shapefile-to-topojson build/tl_2018_us_county.shp build/tl_2018_us_county.dbf GEOID NAMELSAD
  
 
