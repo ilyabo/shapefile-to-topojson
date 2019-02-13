@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 4 ]; then
+    echo "Not enough arguments provided"
+    echo
+    echo "Usage: shapefile-to-topojson <path to shapefile> <path to DBF file> <id property in DBF> <name property in DBF> [<simplification accuracy>]"
+    echo "Example: shapefile-to-topojson my.shp my.dbf GEOID NAME 1/5000"
+    echo
+fi
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+INPUT_SHAPEFILE=${1:?Path to the input shapefile not specified}
+INPUT_DBF=${2:?Path to the input shapefile not specified}
+ID_PROPERTY=${3:?ID property not specified}
+NAME_PROPERTY=${4:?Name property not specified}
+SIMPLIFICATION_ACCURACY=${5:-'1/5000'}
+OUTPUT_OBJECT_NAME="areas"
+
+
+# Find a sensible shape geometry simplification threshold by using a fraction of the average shape area
+SIMPLIFICATION_THRESHOLD=$(shp2json -n $INPUT_SHAPEFILE \
+ | ndjson-reduce -r d3geo=d3-geo 'p.sum += d3geo.geoArea(d), p.count++, p' '{ sum: 0, count: 0 }' \
+ | ndjson-map "(d.sum / d.count) * $SIMPLIFICATION_ACCURACY" \
+)
+
+COUNT_MISSING_IDS=$(dbf2json -n $INPUT_DBF \
+ | ndjson-reduce  "p += (d['$ID_PROPERTY'] == null ? 1 : 0)" '0' \
+)
+if [ $COUNT_MISSING_IDS -gt 0 ]; then
+  echo "There is a problem with the shapes: At least one shape is missing an ID property value."
+  echo "Ensure that the name of the ID property is correct: ${ID_PROPERTY}"
+  exit 1
+fi
+
+geo2topo $OUTPUT_OBJECT_NAME=<(ndjson-join \
+ <(shp2json -n $INPUT_SHAPEFILE) \
+ <(dbf2json -n $INPUT_DBF) \
+  | ndjson-map 'Object.assign(d[0], { properties: d[1] })' \
+  | ndjson-map "d.id = ''+d.properties['$ID_PROPERTY'], d" \
+  | ndjson-map "d.properties = { name: ''+(d.properties['$NAME_PROPERTY'] || d.properties['$ID_PROPERTY']) }, d" \
+  | ndjson-map -r d3geo=d3-geo 'd.properties.centroid = d3geo.geoCentroid(d), d' \
+  | ndjson-reduce | ndjson-map '{type: "FeatureCollection", features: d}' \
+) \
+| toposimplify -f -s $SIMPLIFICATION_THRESHOLD \
+| topoquantize 1e5
