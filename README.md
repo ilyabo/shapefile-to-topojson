@@ -1,7 +1,7 @@
 ## shapefile-to-topojson
 
-This utility converts shapefiles to TopoJSON for the OD dashboard.
-It attemtps to find the best simplification threshold parameter value by looking
+This utility converts shapefiles to TopoJSON.
+It attemtps to automatically find the best simplification threshold parameter value by looking
 at the bounding boxes of the shapes in the shapefile.
 It also ensures that all the shapes in the output TopoJSON have ids and names set.
 
