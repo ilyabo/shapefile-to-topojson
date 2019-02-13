@@ -2,7 +2,7 @@
 
 This utility converts shapefiles to TopoJSON attempting to automatically find a reasonable simplification threshold parameter value by looking at the bounding boxes of the shapes in the shapefile.
 
-The motivation is to be able to produce shapes of about the same detail level no matter what the actual (geographic) sizes of the shapes are and what the input shapefiles detail level is.
+The motivation is to be able to produce shapes of about the same visual detail level when rendered on the screen no matter what the actual (geographic) sizes of the shapes are and what the input shapefiles detail level is.
 
 The utility also ensures that all the shapes in the output TopoJSON have their ids and names set.
 
