@@ -34,13 +34,12 @@ if [ $COUNT_MISSING_IDS -gt 0 ]; then
   exit 1
 fi
 
-geo2topo $OUTPUT_OBJECT_NAME=<(\
+geo2topo -n $OUTPUT_OBJECT_NAME=<(\
   ndjson-join <(shp2json -n $INPUT_SHAPEFILE) <(dbf2json -n $INPUT_DBF) \
   | ndjson-map 'Object.assign(d[0], { properties: d[1] })' \
   | ndjson-map "d.id = ''+d.properties['$ID_PROPERTY'], d" \
   | ndjson-map "d.properties = { name: ''+(d.properties['$NAME_PROPERTY'] || d.properties['$ID_PROPERTY']) }, d" \
   | ndjson-map -r d3geo=d3-geo 'd.properties.centroid = d3geo.geoCentroid(d), d' \
-  | ./ndjson-merge '{"type": "FeatureCollection", "features": [' ',' ']}'
 ) \
 | toposimplify -f -s $SIMPLIFICATION_THRESHOLD \
 | topoquantize 1e5
