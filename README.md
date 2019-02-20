@@ -14,7 +14,7 @@ First, install dependencies:
 
 ### Usage
 
-    shapefile-to-topojson <shapefile> <DBF file> <id property> <name property> [<simplification accuracy>]
+    shapefile-to-topojson <shapefile> <id property> <name property> [<simplification accuracy>]
 
 
 ### Examples
@@ -25,11 +25,11 @@ To download test shapefiles:
 
 Convert US states to TopoJSON:
 
-    ./shapefile-to-topojson build/tl_2018_us_state.shp build/tl_2018_us_state.dbf STUSPS NAME 1/10000
+    ./shapefile-to-topojson build/tl_2018_us_state.shp STUSPS NAME 1/10000
     
 Convert US counties to TopoJSON:
 
-    ./shapefile-to-topojson build/tl_2018_us_county.shp build/tl_2018_us_county.dbf GEOID NAMELSAD
+    ./shapefile-to-topojson build/tl_2018_us_county.shp GEOID NAMELSAD
  
 
 The default value for the simplification accuracy parameter is 1/5000.

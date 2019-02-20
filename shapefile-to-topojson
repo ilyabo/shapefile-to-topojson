@@ -3,7 +3,7 @@
 if [ $# -lt 4 ]; then
     echo "Not enough arguments provided"
     echo
-    echo "Usage: shapefile-to-topojson <path to shapefile> <path to DBF file> <id property in DBF> <name property in DBF> [<simplification accuracy>]"
+    echo "Usage: shapefile-to-topojson <path to shapefile> <id property in DBF> <name property in DBF> [<simplification accuracy>]"
     echo "Example: shapefile-to-topojson my.shp my.dbf GEOID NAME 1/5000"
     echo
 fi
@@ -11,10 +11,10 @@ fi
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 INPUT_SHAPEFILE=${1:?Path to the input shapefile not specified}
-INPUT_DBF=${2:?Path to the input shapefile not specified}
-ID_PROPERTY=${3:?ID property not specified}
-NAME_PROPERTY=${4:?Name property not specified}
-SIMPLIFICATION_ACCURACY=${5:-'1/5000'}
+INPUT_DBF="${INPUT_SHAPEFILE/%.shp/.dbf}"
+ID_PROPERTY=${2:?ID property not specified}
+NAME_PROPERTY=${3:?Name property not specified}
+SIMPLIFICATION_ACCURACY=${4:-'1/5000'}
 OUTPUT_OBJECT_NAME="areas"
 
 
